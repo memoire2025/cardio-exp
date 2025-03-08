@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Authentification</title>
+    <!-- Favicon -->
+    <link rel="shortcut icon" type="/assets/img/logoBens.png" href="favicon.png"/>
+    <link rel="stylesheet" href="/assets/css/app.css">
+    <link rel="stylesheet" href="/assets/vendor/bootstrap/css/bootstrap.min.css">
+    <script src="/assets/js/jquery-3.7.1.min.js"></script>
+    <!-- Fontawesome CSS CDN -->
+    <link rel="stylesheet" href="/assets/font-awesome/css/all.min.css">
+</head>
+<body>
+    <div id="body" class="d-flex flex-column justify-content-center align-items-center px-2 px-md-0" style="height: 100vh;">
+        
+        <div class="authent-bloc bg-white col-12 col-md-4 border border-success shadow">
+            <div class="head-authent bg-success text-center py-2">
+                <h4 class="text-white text-uppercase">Se connecter</h4>
+            </div>
+            <form id="form-login" class="form-inline p-2 p-lg-4">
+                <div class="form-group my-2">
+                    <label for="email" class="label-form">E-MAIL :</label>
+                    <input type="email" autocomplete="off" placeholder="E-mail" name="email" id="email" class="form-control rounded-0 shadow-none border border-success" required>
+                </div>
+                <div class="form-group my-2">
+                    <label for="id" class="label-form">PASSWORD :</label>
+                    <input type="password" autocomplete="off" placeholder="Password" minlength="8" maxlength="20" name="mdp" id="mdp" class="form-control rounded-0 shadow-none border border-success" required>
+                </div>
+                <div class="form-group text-center mt-4">
+                    <button class="btn btn-success btn-block col-12 border rounded-0" id="btn-login" style="letter-spacing: 4px;">
+                        <span class="text-btn">Connexion</span>
+                        <span class="spinner-grow text-light d-none" id="spinner"></span>
+                    </button>
+                </div>
+                <div id="info" class="alert my-2 d-none rounded-0">
+            </form>
+        </div>
+    </div>
+    <script src="/assets/js/axios.min.js"></script>
+    <script src="/assets/js/bootstrap.min.js"></script>
+    <script>
+        $(document).ready(function(){
+            $('#form-login').submit(function(e){
+                e.preventDefault();
+
+                var formData = new FormData(this);
+                $('#btn-login').prop('disabled', true);
+
+                $('#spinner').removeClass('d-none');
+                $('.text-btn').hide();
+
+                axios.post('/login', formData)
+                .then(function(response){
+                    if (response.data.status === "success") {
+                        setTimeout(() => {
+                            window.location.replace(response.data.route);
+                        }, 1750);
+                    }else{
+                        $('#info').addClass('alert-danger').removeClass('alert-success');
+                        $('#btn-login').prop('disabled', false);
+
+                        $('#spinner').addClass('d-none');
+                        $('.text-btn').show();
+
+                        $('#info').removeClass('d-none').hide().fadeIn("slow");
+                        $('#info').html(response.data.message);
+                    }
+                    console.log(response.data);
+                })
+                .catch(error => {
+                    alert('Erreur :'+ error);
+                })
+            })
+        });
+    </script>
+</body>
+</html>

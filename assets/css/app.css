@@ -1,0 +1,22 @@
+#body{
+    background-color: rgb(234, 248, 244);
+    /* background: linear-gradient(); */
+}
+
+#link-head>div{
+    transition: .3s ease-in-out;
+}
+
+#link-head>div:hover{
+    cursor: pointer;
+    padding: 5px 3px;
+    color: #72c55dee;
+}
+
+table td{
+    color: rgba(82, 82, 82, 0.863);
+}
+
+input:focus, select:focus{
+    border: 1px solid blue;
+}
